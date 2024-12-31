@@ -1,0 +1,17 @@
+[Unit]
+Description=An OpenAI Whisper server running the wyoming protocol
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=localhost/wyoming-whisper-cuda:latest
+PodmanArgs=--device nvidia.com/gpu=all
+PublishPort=10300:10300
+Volume=wyoming-whisper-data:/data
+Exec=--model medium-int8 --language en --beam-size 5 --device cuda
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
